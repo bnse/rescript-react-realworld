@@ -20,7 +20,7 @@ let make = (~slug: string, ~user: option<Shape.User.t>) => {
           ->AsyncResult.getOk
           ->Option.map((ok: Shape.Article.t) => ok.title)
           ->Option.map(title => title->React.string)
-          ->Option.getWithDefault(React.null)}
+          ->Option.getOr(React.null)}
         </h1>
         <div className="article-meta">
           <ArticleAuthorAvatar article />

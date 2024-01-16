@@ -33,10 +33,15 @@ module Author = {
   let decode = (json: Json.t): Result.t<t, decodeError> => {
     try {
       let obj = json->Json.decodeObject->Option.getExn
-      let username = obj->Dict.get("username")->Option.flatMap(Json.decodeString)->Option.getExn
-      let bio = obj->Dict.get("bio")->Option.flatMap(Json.decodeString)
-      let image = obj->Dict.get("image")->Option.flatMap(Json.decodeString)->Option.getExn
-      let following = obj->Dict.get("following")->Option.flatMap(Json.decodeBoolean)
+      let username =
+        obj
+        ->Dict.get("username")
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.getExn
+      let bio = obj->Dict.get("bio")->Option.flatMap(item => Json.decodeString(item))
+      let image =
+        obj->Dict.get("image")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
+      let following = obj->Dict.get("following")->Option.flatMap(item => Json.decodeBoolean(item))
 
       Result.Ok({
         username,
@@ -67,34 +72,44 @@ module Article = {
   let decode = (json: Json.t): Result.t<t, decodeError> => {
     try {
       let obj = json->Json.decodeObject->Option.getExn
-      let slug = obj->Dict.get("slug")->Option.flatMap(Json.decodeString)->Option.getExn
-      let title = obj->Dict.get("title")->Option.flatMap(Json.decodeString)->Option.getExn
+      let slug =
+        obj
+        ->Dict.get("slug")
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.getExn
+      let title =
+        obj->Dict.get("title")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
       let description =
-        obj->Dict.get("description")->Option.flatMap(Json.decodeString)->Option.getExn
-      let body = obj->Dict.get("body")->Option.flatMap(Json.decodeString)->Option.getExn
+        obj->Dict.get("description")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
+      let body =
+        obj
+        ->Dict.get("body")
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.getExn
       let tagList =
         obj
         ->Dict.get("tagList")
-        ->Option.flatMap(Json.decodeArray)
-        ->Option.flatMap(tagList => Some(tagList->Array.filterMap(Json.decodeString)))
+        ->Option.flatMap(item => Json.decodeArray(item))
+        ->Option.flatMap(tagList => Some(tagList->Array.filterMap(item => Json.decodeString(item))))
         ->Option.getExn
       let createdAt =
         obj
         ->Dict.get("createdAt")
-        ->Option.flatMap(Json.decodeString)
+        ->Option.flatMap(item => Json.decodeString(item))
         ->Option.getExn
         ->Js.Date.fromString
       let updatedAt =
         obj
         ->Dict.get("updatedAt")
-        ->Option.flatMap(Json.decodeString)
+        ->Option.flatMap(item => Json.decodeString(item))
         ->Option.getExn
         ->Js.Date.fromString
-      let favorited = obj->Dict.get("favorited")->Option.flatMap(Json.decodeBoolean)->Option.getExn
+      let favorited =
+        obj->Dict.get("favorited")->Option.flatMap(item => Json.decodeBoolean(item))->Option.getExn
       let favoritesCount =
         obj
         ->Dict.get("favoritesCount")
-        ->Option.flatMap(Json.decodeNumber)
+        ->Option.flatMap(item => Json.decodeNumber(item))
         ->Option.getExn
         ->int_of_float
       let author =
@@ -138,7 +153,7 @@ module Articles = {
       let articles =
         obj
         ->Dict.get("articles")
-        ->Option.flatMap(Json.decodeArray)
+        ->Option.flatMap(item => Json.decodeArray(item))
         ->Option.flatMap(articles => {
           articles
           ->Array.filterMap(article =>
@@ -153,7 +168,7 @@ module Articles = {
       let articlesCount =
         obj
         ->Dict.get("articlesCount")
-        ->Option.flatMap(Json.decodeNumber)
+        ->Option.flatMap(item => Json.decodeNumber(item))
         ->Option.map(int_of_float)
         ->Option.getExn
 
@@ -176,8 +191,8 @@ module Tags = {
       let tags =
         obj
         ->Dict.get("tags")
-        ->Option.flatMap(Json.decodeArray)
-        ->Option.map(tags => tags->Array.filterMap(Json.decodeString))
+        ->Option.flatMap(item => Json.decodeArray(item))
+        ->Option.map(tags => tags->Array.filterMap(item => Json.decodeString(item)))
         ->Option.getExn
 
       Result.Ok(tags)
@@ -207,11 +222,14 @@ module User = {
   let decodeUser = (json: Json.t): Result.t<t, decodeError> => {
     try {
       let obj = json->Json.decodeObject->Option.getExn
-      let email = obj->Dict.get("email")->Option.flatMap(Json.decodeString)->Option.getExn
-      let username = obj->Dict.get("username")->Option.flatMap(Json.decodeString)->Option.getExn
-      let bio = obj->Dict.get("bio")->Option.flatMap(Json.decodeString)
-      let image = obj->Dict.get("image")->Option.flatMap(Json.decodeString)
-      let token = obj->Dict.get("token")->Option.flatMap(Json.decodeString)->Option.getExn
+      let email =
+        obj->Dict.get("email")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
+      let username =
+        obj->Dict.get("username")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
+      let bio = obj->Dict.get("bio")->Option.flatMap(item => Json.decodeString(item))
+      let image = obj->Dict.get("image")->Option.flatMap(item => Json.decodeString(item))
+      let token =
+        obj->Dict.get("token")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
 
       Result.Ok({
         email,
@@ -257,10 +275,16 @@ module CommentUser = {
   let decode = (json: Json.t): Result.t<t, decodeError> => {
     try {
       let obj = json->Json.decodeObject->Option.getExn
-      let username = obj->Dict.get("username")->Option.flatMap(Json.decodeString)->Option.getExn
-      let bio = obj->Dict.get("bio")->Option.flatMap(Json.decodeString)
-      let image = obj->Dict.get("image")->Option.flatMap(Json.decodeString)->Option.getExn
-      let following = obj->Dict.get("following")->Option.flatMap(Json.decodeBoolean)->Option.getExn
+      let username =
+        obj->Dict.get("username")->Option.flatMap(item => Json.decodeString(item))->Option.getExn
+      let bio = obj->Dict.get("bio")->Option.flatMap(item => Json.decodeString(item))
+      let image =
+        obj
+        ->Dict.get("image")
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.getExn
+      let following =
+        obj->Dict.get("following")->Option.flatMap(item => Json.decodeBoolean(item))->Option.getExn
 
       Result.Ok({
         username,
@@ -289,22 +313,26 @@ module Comment = {
       let id =
         obj
         ->Dict.get("id")
-        ->Option.flatMap(Json.decodeNumber)
+        ->Option.flatMap(item => Json.decodeNumber(item))
         ->Option.map(int_of_float)
         ->Option.getExn
       let createdAt =
         obj
         ->Dict.get("createdAt")
-        ->Option.flatMap(Json.decodeString)
-        ->Option.map(Js.Date.fromString)
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.map(item => Js.Date.fromString(item))
         ->Option.getExn
       let updatedAt =
         obj
         ->Dict.get("updatedAt")
-        ->Option.flatMap(Json.decodeString)
-        ->Option.map(Js.Date.fromString)
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.map(item => Js.Date.fromString(item))
         ->Option.getExn
-      let body = obj->Dict.get("body")->Option.flatMap(Json.decodeString)->Option.getExn
+      let body =
+        obj
+        ->Dict.get("body")
+        ->Option.flatMap(item => Json.decodeString(item))
+        ->Option.getExn
       let author =
         obj
         ->Dict.get("author")
@@ -334,7 +362,7 @@ module Comment = {
       let comments =
         obj
         ->Dict.get("comments")
-        ->Option.flatMap(Json.decodeArray)
+        ->Option.flatMap(item => Json.decodeArray(item))
         ->Option.map(comments => {
           comments->Array.filterMap(comment => {
             switch comment->decodeComment {

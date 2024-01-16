@@ -32,13 +32,13 @@ let setCookieRaw = (
 ): unit => {
   let htmlDocument = Webapi.Dom.document->Webapi.Dom.Document.asHtmlDocument->Option.getExn
 
-  let value = value->Option.getWithDefault("")
+  let value = value->Option.getOr("")
   let expires = expires !== "" ? `expires=${expires};` : ""
   let path =
     path
     ->Option.flatMap(path => path == "" ? None : Some(path))
     ->Option.map(path => ` path=${path};`)
-    ->Option.getWithDefault("")
+    ->Option.getOr("")
   let cookie = `${key}=${value};${expires}${path}`
 
   Webapi.Dom.HtmlDocument.setCookie(htmlDocument, cookie)
@@ -78,6 +78,6 @@ let formatDate = (date: Js.Date.t): string => {
 module Json = {
   let decodeArrayString = (json: option<Js.Json.t>): option<array<string>> =>
     json
-    ->Option.flatMap(Js.Json.decodeArray)
-    ->Option.map(xs => xs->Array.filterMap(Js.Json.decodeString))
+    ->Option.flatMap(item => Js.Json.decodeArray(item))
+    ->Option.map(xs => xs->Array.filterMap(item => Js.Json.decodeString(item)))
 }
