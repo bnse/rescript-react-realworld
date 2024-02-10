@@ -24,7 +24,7 @@ let addJwtAuthorization = (): array<(string, string)> => {
   Utils.getCookie(Constant.Auth.tokenCookieName)
   ->Option.flatMap(snd)
   ->Option.map(token => [("Authorization", `Token ${token}`)])
-  ->Option.getWithDefault([])
+  ->Option.getOr([])
 }
 
 let addJsonContentType = (): array<(string, string)> => {
@@ -268,7 +268,7 @@ let updateUser = async (~user: Shape.User.t, ~password: string, ()): result<
   let user =
     list{
       list{("email", Js.Json.string(user.email))},
-      list{("bio", Js.Json.string(user.bio->Option.getWithDefault("")))},
+      list{("bio", Js.Json.string(user.bio->Option.getOr("")))},
       list{("image", Js.Json.string(user.image->Option.getWithDefault("")))},
       list{("username", Js.Json.string(user.username))},
       if password == "" {
