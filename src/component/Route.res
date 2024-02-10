@@ -9,7 +9,7 @@ type t =
   | Favorited(string)
   | Settings
 
-let useRoute: unit => t = () => {
+let useRoute = () => {
   let url = RescriptReactRouter.useUrl()
   let hash = url.hash->String.split("/")
 

@@ -18,19 +18,19 @@
   },
   "dependencies": {
     "@glennsl/rescript-fetch": "^0.2.0",
-    "@rescript/core": "^0.6.0",
-    "@rescript/react": "^0.12.0",
+    "@rescript/core": "^0.7.0",
+    "@rescript/react": "^0.12.1",
     "dompurify": "^3.0.8",
-    "marked": "^11.1.1",
+    "marked": "^12.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rescript-webapi": "^0.9.0"
+    "rescript-webapi": "^0.9.1"
   },
   "devDependencies": {
     "@jihchi/vite-plugin-rescript": "^5.5.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "prettier": "^3.2.2",
-    "rescript": "11.0.0",
-    "vite": "^5.0.11"
+    "prettier": "^3.2.5",
+    "rescript": "11.0.1",
+    "vite": "^5.1.1"
   }
 }
